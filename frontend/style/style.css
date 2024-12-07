@@ -1,0 +1,96 @@
+.search-form {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 20%;
+  margin-left: 35%;
+}
+
+.search-Btn {
+  margin-left: 10px;
+}
+
+.login-Btn {
+  margin-right: 20px;
+}
+
+.cart-Btn{
+  margin-right: 15px;
+}
+
+.logo-Img {
+  margin-left: 30px;
+}
+
+.carousel {
+  margin-top: 3%;
+}
+
+.card {
+  margin-top: 5%;
+}
+
+.heading {
+  margin-top: 5%;
+  margin-bottom: 2%;
+}
+
+.card-img-top {
+  height: 300px;
+  width: 100%;
+}
+
+.category {
+  color: rgb(8, 130, 89);
+  margin-top: 50px;
+}
+
+.card-img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.blur-image {
+  filter: blur(2px);
+}
+
+.category-card-link {
+  text-decoration: none;
+  color: aliceblue;
+  text-shadow: 2px 2px black;
+}
+
+.footer {
+  margin-top: 100px;
+  background-color: #f8f9fa;
+}
+
+.foot-heading {
+  padding-top: 30px;
+  color: black;
+}
+
+.com {
+  color: rgb(8, 130, 89);
+}
+
+.category-card-link:hover{
+  color:rgb(8, 130, 89);
+}
+
+.banner{
+  margin-top: 50px;
+}
+
+.posters{
+  margin: 100px 0px;
+}
+
+.search-input:focus {
+  border-color: rgb(8, 130, 89);
+  box-shadow: 0 0 0 0.25rem rgb(8, 130, 89, 0.25);
+}

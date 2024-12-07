@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopify</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand logo-Img" href="#">
+            <h2 style="color: rgb(8, 130, 89);">Shopify</h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto"></ul>
+            <form class="form-inline my-2 my-lg-0 search-form">
+                <input class="form-control mr-sm-2 search-input" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0 search-Btn" type="submit"> <i
+                        class="bi bi-search"></i>Search</button>
+            </form>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item cart-Btn">
+                    <a class="nav-link cart-Btn" ui-sref="Cart"
+                        style="background-color: rgb(8, 130, 89); border-radius: 5px; color: white;">
+                        <i class="bi bi-cart-fill"></i> Cart
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item login-Btn" ng-hide="userLoggedIn">
+                    <a class="nav-link login-Btn" href="#" style="color: rgb(8, 130, 89);"
+                        ng-click="showLoginPopup()"><i class="bi bi-box-arrow-in-right"></i>Login</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item login-Btn" ng-show="userLoggedIn">
+                    <a class="nav-link login-Btn" href="#" ng-click="logout()">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <section class="vh-100 " style="background-color: #eee">
+        <div class="container h-100">
+            <div class="row d-flex h-100">
+                <div class="col-md-3" ng-repeat="product in allproducts">
+                    <div class="card" style="width: 18rem;">
+                        <img src="https://127.0.0.1:8000/media/{{product.image}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.product_name}}</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the card's content.</p>
+                            <a href="#" class="btn btn-primary">Add item</a>
+                            <a href="#" class="btn btn-primary">Add item</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

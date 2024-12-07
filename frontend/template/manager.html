@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopify</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="d-flex justify-content-center position-fixed top-0 start-50 translate-middle-x mt-2">
+      <div ng-repeat="alert in alerts | filter:({section:'1'}) || filter:({section:'2'})"
+        class="alert alert-{{alert.type}} alert-dismissible fade show" role="alert">
+        {{ alert.msg }}
+        <button type="button" class="btn-close" aria-label="Close" ng-click="alert.close()"></button>
+      </div>
+    </div>
+
+    <a class="navbar-brand logo-Img" href="#">
+      <h2 style="color: rgb(8, 130, 89)">Shopify</h2>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="navbar-nav ms-auto">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item login-Btn">
+            <a class="nav-link login-Btn" href="#" ng-click="showCreateSection($event)" style="color: rgb(8, 130, 89)">
+              Create section
+            </a>
+          </li>
+          <li class="nav-item login-Btn" ng-show="!userLoggedIn">
+            <a class="nav-link login-Btn" href="#" ng-click="logout()">
+              <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div>
+    <section class="vh-100" style="background-color: #eee">
+      <div class="container h-100" style="padding-top: 100px">
+
+        <div class="accordion accordion-flush" id="accordionFlushExample{{$index}}"
+          ng-repeat="(accordionIndex, category) in categories">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-heading{{$index}}">
+              <div class="row mt-3">
+                <div class="col-10">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapse{{$index}}" aria-expanded="false"
+                    aria-controls="flush-collapse{{$index}}" ng-click="displayProducts(category)">
+                    {{ category.category_name}}
+                  </button>
+                </div>
+
+                <div class="col-2">
+                  <div ng-if="!category.editMode">
+                    <button class="btn btn-outline-secondary" type="button" ng-click="edit(category)">
+                      <i class="bi bi-pencil-square"></i> Edit
+                    </button>
+                    <button class="btn btn-outline-secondary" type="button" ng-click="delete(category)">
+                      <i class="bi bi-trash"></i> Del
+                    </button>
+                  </div>
+                  <div ng-if="category.editMode">
+                    <input type="text" ng-model="category.updateName" class="form-control" />
+                    <input type="file" ng-model="category.updateImage" class="custom-file-input" id="updatedImage"
+                      accept="image/*" />
+                    <button class="btn btn-primary" ng-click="saveEdit(category)">
+                      Add
+                    </button>
+                    <button class="btn btn-secondary" ng-click="cancelEdit(category)">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </h2>
+
+            <div id="flush-collapse{{$index}}" class="accordion-collapse collapse"
+              aria-labelledby="flush-heading{{$index}}" data-bs-parent="#accordionFlushExample{{$index}}">
+              <div class="accordion-body">
+                <div class="row flex-nowrap overflow-auto">
+                  <div class="col-md-2">
+                    <div class="card h-70">
+                      <i class="bi bi-plus-circle" style="font-size: 11.5rem;"></i>
+                      <div class="card-body d-flex justify-content-center">
+                        <div class="card-body text-center">
+                          <button class="btn btn-primary" ng-click="showModal($index)">
+                            Add Products
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="modal fade" id="addProductModal{{accordionIndex}}" tabindex="-1" role="dialog"
+                        aria-labelledby="addProductModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="addProductModalLabel">
+                                Add Product
+                              </h5>
+                              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+                                ng-click="hideModal($index)">
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <form ng-submit="submitForm()">
+                                <div class="form-group">
+                                  <label for="productName">Product Name</label>
+                                  <input type="text" class="form-control" id="productName" ng-model="product.name"
+                                    required>
+                                </div>
+                                <div class="form-group">
+                                  <label for="productDescription">Product Description</label>
+                                  <textarea class="form-control" id="productDescription" ng-model="product.description"
+                                    rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                  <label for="productPrice">Product Price Per Unit</label>
+                                  <input type="number" class="form-control" id="productPrice" ng-model="product.price"
+                                    required>
+                                </div>
+                                <div class="form-group">
+                                  <label for="productQuantity">Product Quantity</label>
+                                  <input type="number" class="form-control" id="productQuantity"
+                                    ng-model="product.quantity" required>
+                                </div>
+                                <div class="form-group">
+                                  <label for="productUnit">Product Unit</label>
+                                  <select class="form-control" id="productUnit" ng-model="product.unit">
+                                    <option value="kg">kg</option>
+                                    <option value="ltr">ltr</option>
+                                    <option value="qty">qty</option>
+                                  </select>
+                                </div>
+                                <div class="form-group">
+                                  <label for="productManufacturingDate">Manufacturing Date</label>
+                                  <input type="date" class="form-control" id="productManufacturingDate"
+                                    ng-model="product.manufacturingDate">
+                                </div>
+                                <div class="form-group">
+                                  <label for="productExpiryDate">Expiry Date</label>
+                                  <input type="date" class="form-control" id="productExpiryDate"
+                                    ng-model="product.expiryDate">
+                                </div>
+                                <div class="form-group">
+                                  <label for="productImage">Product Image</label>
+                                  <input type="file" class="form-control" id="productImage{{$index}}" accept="image/*"
+                                    ng-model="product.image">
+                                </div>
+                              </form>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                ng-click="hideModal($index)">
+                                Close
+                              </button>
+                              <button type="button" class="btn btn-primary" ng-click="addProduct(category, $index)">
+                                Add
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2" ng-repeat="product in category.products track by $index">
+                    <div class="card h-70">
+                      <img ng-src="https://127.0.0.1:8000/media/{{ product.image }}" alt="{{ product.image }}"
+                        class="card-img-top" style="object-fit: cover;">
+                      <div class="card-body">
+                        <h5 class="card-title">{{product.product_name}}</h5>
+                        <div ng-if="!product.editMode">
+                          <button class="btn btn-outline-secondary btn-block" type="button"
+                            ng-click="editProduct(product, accordionIndex, $index)">
+                            <i class="bi bi-pencil-square"></i> Edit
+                          </button>
+                          <button class="btn btn-outline-secondary btn-block" type="button"
+                            ng-click="delProduct(product)">
+                            <i class="bi bi-trash"></i> Del
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal fade" id="editProductModal{{accordionIndex}}{{$index}}" tabindex="-1"
+                      role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="editProductModalLabel">
+                              Edit Product
+                            </h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+                              ng-click="cancelProductEdit(editingProduct , accordionIndex, $index)">
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form ng-submit="saveProductEditModal()">
+                              <div class="form-group">
+                                <label for="productName">Product Name</label>
+                                <input type="text" class="form-control" id="productName"
+                                  ng-model="editingProduct.updateName" required>
+                              </div>
+                              <div class="form-group">
+                                <label for="productDescription">Product Description</label>
+                                <textarea class="form-control" id="productDescription"
+                                  ng-model="editingProduct.updateDescription" rows="3"></textarea>
+                              </div>
+                              <div class="form-group">
+                                <label for="productPrice">Product Price Per Unit</label>
+                                <input type="number" class="form-control" id="productPrice"
+                                  ng-model="editingProduct.updatePrice" required>
+                              </div>
+                              <div class="form-group">
+                                <label for="productQuantity">Product Quantity</label>
+                                <input type="number" class="form-control" id="productQuantity"
+                                  ng-model="editingProduct.updateQuantity" required>
+                              </div>
+                              <div class="form-group">
+                                <label for="productUnit">Product Unit</label>
+                                <select class="form-control" id="productUnit" ng-model="editingProduct.updateUnit">
+                                  <option value="kg">kg</option>
+                                  <option value="ltr">ltr</option>
+                                  <option value="qty">qty</option>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label for="productManufacturingDate">Manufacturing Date</label>
+                                <input type="date" class="form-control" id="productManufacturingDate"
+                                  ng-model="editingProduct.updateMfgDate">
+                              </div>
+                              <div class="form-group">
+                                <label for="productExpiryDate">Expiry Date</label>
+                                <input type="date" class="form-control" id="productExpiryDate"
+                                  ng-model="editingProduct.updateExpDate">
+                              </div>
+                              <div class="form-group">
+                                <label for="productImage">Product Image</label>
+                                <input type="file" class="form-control" id="editingProductImage" accept="image/*"
+                                  ng-model="editingProduct.updateImage">
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                  ng-click="cancelProductEdit(editingProduct , accordionIndex, $index)">
+                                  Close
+                                </button>
+                                <button type="button" class="btn btn-primary"
+                                  ng-click="saveProductEdit(editingProduct,accordionIndex, $index)">
+                                  Save Changes
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.all.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.26/angular-ui-router.min.js"></script>
+  <script src="../script.js"></script>
+</body>
+
+</html>
